@@ -1,7 +1,7 @@
 import time
 import lib.robot as robotComm
 
-robot = robotComm.HC10('192.168.1.10')
+robot = robotComm.HC10('172.16.0.1')
 
 def robot_init():
     
