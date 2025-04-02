@@ -21,8 +21,8 @@ T_S = {
 # Pretvorba v notranji format (mm → μm, ° → 0.0001°)
 def to_internal(transformation, x_mm, y_mm, z_mm, rx_deg, ry_deg, rz_deg, re_deg=0, speed=1000, job_name=""):
     x = int(x_mm * 1000 + (T_C["x"] if transformation == "C" else T_S["x"] if transformation == "S" else 0))
-    y = int(x_mm * 1000 + (T_C["y"] if transformation == "C" else T_S["y"] if transformation == "S" else 0))
-    z = int(x_mm * 1000 + (T_C["z"] if transformation == "C" else T_S["z"] if transformation == "S" else 0))
+    y = int(y_mm * 1000 + (T_C["y"] if transformation == "C" else T_S["y"] if transformation == "S" else 0))
+    z = int(z_mm * 1000 + (T_C["z"] if transformation == "C" else T_S["z"] if transformation == "S" else 0))
     rx = int(rx_deg * 10000)
     ry = int(ry_deg * 10000)
     rz = int(rz_deg * 10000)
@@ -33,10 +33,11 @@ def to_internal(transformation, x_mm, y_mm, z_mm, rx_deg, ry_deg, rz_deg, re_deg
 def move(points, index, pause=0.1):
     print("▶️ Horizontalno gibanje...")
     target_pos, speed, job = to_internal(*points[index])
-    moveL(target_pos, speed=speed)
+    print(target_pos)
+    moveL(target_pos=target_pos, speed=speed)
     while not move_complete():
-        time.sleep(0.1)
-    execute_job(job)
+        pass
+    #execute_job(job)
     time.sleep(pause)
 
 # # Vertikalno gibanje
@@ -58,6 +59,7 @@ def main():
         points = data.get("points", [])
     
     # print(points)
+    print(points[0])
     for i in range(len(points)):
         move(points, index=i, pause=0.2)
     # vertical_move(points, index=1, pause=0.3)
