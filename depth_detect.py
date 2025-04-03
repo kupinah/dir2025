@@ -3,20 +3,41 @@
 # pip install inference_sdk opencv-python
 
 from inference_sdk import InferenceHTTPClient
+import os
 
 # create an inference client
 CLIENT = InferenceHTTPClient(
     api_url="https://detect.roboflow.com",
-    api_key="ujwzpVqKpNMqRirBWTXZ"
+    api_key="ovceb4fOJqyDwEaLLsDj"
 )
 
 # TODO: replace with your own image
 
-img = "C:/Users/student/Desktop/dir2025/globinske fotke 2/1_Depth.png" 
+photos_directory = "C:/Users/student/Desktop/dir2025/GLOBINA 1"
+
+def get_latest_file(directory):
+    # Get a list of all files in the directory
+    files = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
+    
+    if not files:
+        print("No files found in the directory.")
+        return None
+    
+    # Get the full path of each file
+    full_paths = [os.path.join(directory, f) for f in files]
+    
+    # Sort the files by their last modified time (descending order)
+    latest_file = max(full_paths, key=os.path.getmtime)
+    print(latest_file)
+
+
+    return str(latest_file).replace("\\", "/")
+
+img = get_latest_file(photos_directory)
 # run inference on a local image
 output = CLIENT.infer(
     img, 
-    model_id="depth-recognition/1",
+    model_id="sui/1",
 )
 
 import cv2

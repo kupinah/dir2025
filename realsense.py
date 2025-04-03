@@ -84,7 +84,7 @@ try:
             break
 
         if key == ord('s'):
-            cv2.imwrite(f"image{img_index}.png", depth_colormap)
+            cv2.imwrite(f"C:/Users/student/Desktop/dir2025/GLOBINA 1/image{img_index}.png", depth_colormap)
             img_index += 1
 
 finally:

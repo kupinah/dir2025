@@ -19,50 +19,27 @@ def to_internal(x_mm, y_mm, z_mm, rx_deg, ry_deg, rz_deg, re_deg=0):
     re = int(re_deg * 10000)
     return (x, y, z, rx, ry, rz, re)
 
-
-photos_directory = "C:/Users/student/Pictures/Camera Roll"
-
-def get_latest_file(directory):
-    # Get a list of all files in the directory
-    files = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
-    
-    if not files:
-        print("No files found in the directory.")
-        return None
-    
-    # Get the full path of each file
-    full_paths = [os.path.join(directory, f) for f in files]
-    
-    # Sort the files by their last modified time (descending order)
-    latest_file = max(full_paths, key=os.path.getmtime)
-    print(latest_file)
-
-
-    return str(latest_file).replace("\\", "/")
-
-
 def run_preparation():  # glavna funkcija za pripravo ciljev
     global robot_targets
 
     # začetna pozicija z orientacijo (v mm in stopinjah)
-    start_point_mm = (410.0, 485.7,  40.0, -180.0, 0.0, 0.0)
+    start_point_mm = (400.0, 400.0, 400.0, 0.0, 180.0, 0.0)
 
     # Inicializacija robota (odkomentiraj, če uporabljaš robota)
-    robot_init()
+    # robot_init()
 
     # Premik na začetno točko
     start_point = to_internal(*start_point_mm)
     print("Premik na začetno točko...")
-    moveL(start_point)
-    while not move_complete():
-        pass
+    # moveL(start_point)
+    # while not move_complete():
+    #     time.sleep(0.1)
 
-    # time.sleep(5)
     print("Pripravljen za nalogo:")
 
     # Pot do slike
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    image_path = get_latest_file(photos_directory) # "C:/Users/student/Desktop/dir2025/photos/WIN_20250402_16_07_48_Pro.jpg" # 
+    image_path = os.path.join(script_dir, "Cokoladke2.jpg")
     output_path = os.path.join(script_dir, "output.jpg")
 
     # Zaznavanje objektov
@@ -87,7 +64,7 @@ def run_preparation():  # glavna funkcija za pripravo ciljev
         y_mm = y_px / px_per_mm
         z_mm = 400.0
 
-        rx, ry, rz = -180.0, 0.0, 0.0
+        rx, ry, rz = 0.0, 180.0, 0.0
 
         target = to_internal(x_mm, y_mm, z_mm, rx, ry, rz)
         robot_targets.append(target)
@@ -95,10 +72,19 @@ def run_preparation():  # glavna funkcija za pripravo ciljev
     # Obdrži največ 8 ciljev
     robot_targets = robot_targets[:8]
 
-    # Izpis končnih točk za robota
-    print("\n koordinate čokoladk v mkm:")
+    # Izpis v istem formatu (mm, stopinje)
+    print("\nKoordinate čokoladk v KS kamere (mm, stopinje):")
     for i, target in enumerate(robot_targets, 1):
-        print(f"{i}. {target}")
+        x_mm = target[0] / 1000
+        y_mm = target[1] / 1000
+        z_mm = target[2] / 1000
+        rx_deg = target[3] / 10000
+        ry_deg = target[4] / 10000
+        rz_deg = target[5] / 10000
+
+        formatted = (x_mm, y_mm, z_mm, rx_deg, ry_deg, rz_deg)
+        print(f"{i}. {formatted}")
+    print("")
 
 def get_robot_targets():
     return robot_targets  # vrne seznam ciljnih koordinat
@@ -106,5 +92,4 @@ def get_robot_targets():
 # Če se datoteka zažene neposredno, zaženi pripravo in glavni skript
 if __name__ == "__main__":
     run_preparation()
-    # exec(open("moving1.py", encoding="utf-8").read())  # zažene glavni skript"
-
+    exec(open("moving1.py", encoding="utf-8").read(), globals())

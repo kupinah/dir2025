@@ -10,7 +10,7 @@ CLIENT = InferenceHTTPClient(
     api_key="ujwzpVqKpNMqRirBWTXZ"
 )
 
-def detect_objects(image_path, model_id="dir2025/2"):
+def detect_objects(image_path, model_id="dir2025/3"):
     if not os.path.isfile(image_path):
         raise FileNotFoundError(f"Slika ni bila najdena: {image_path}")
     return CLIENT.infer(image_path, model_id=model_id)
