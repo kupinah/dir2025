@@ -12,7 +12,7 @@ CLIENT = InferenceHTTPClient(
 
 # TODO: replace with your own image
 
-img = "/mnt/c/users/kupin/Documents/Private/temp/dir2025/Globinske fotke/5_Depth.png" 
+img = "C:/Users/student/Desktop/dir2025/globinske fotke 2/1_Depth.png" 
 # run inference on a local image
 output = CLIENT.infer(
     img, 
